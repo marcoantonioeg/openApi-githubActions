@@ -1,0 +1,29 @@
+name: Validate OpenAPI
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'spec/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-spec:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Redocly CLI
+        run: npm install -g @redocly/cli
+
+      - name: Lint OpenAPI Spec
+        run: redocly lint spec/greetings.yaml

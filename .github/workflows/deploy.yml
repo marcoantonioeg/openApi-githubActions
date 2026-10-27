@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+   push:
+      branches: [ main ]
+      paths:
+         - 'docs/**'
+         - 'spec/**'
+permissions:
+   contents: read
+   pages: write
+   id-token: write
+
+jobs:
+   build:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout code
+           uses: actions/checkout@v4
+         - name: Create folder
+           run: mkdir public
+         - name: Copy docs
+           run: cp -r docs public/
+         - name: Copy spec
+           run: cp -r spec public/
+         - name: Upload artifact
+           uses: actions/upload-pages-artifact@v3
+           with:
+             path: public/
+           
